@@ -1,16 +1,16 @@
 [package]
 name = "blatta_ids"
 version = "0.1.0"
-authors = ["dretarastra"]
-edition = "2018"
+authors = ["Baskoro Adi Pratomo, Ravi Vendra Rishika"]
+edition = "2022"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-smoltcp = "0.7.5"
-ctrlc = { version = "3.0", features = ["termination"] }
-tch = "0.5.0"
-ndarray = { version="0.15", default-features = true }
+smoltcp = "0.8.1"
+ctrlc = {version = "3.0", features = ["termination"]}
+tch = "0.8.0"
+ndarray = {version="0.15", default-features = true}
 anyhow = "1.0.44"
-#blatta_stream = { git = "https://github.com/bazz-066/blatta-stream/" }
-blatta_stream = { path = "../blatta-stream/" }
+
+# blatta_stream = {git = "https://github.com/bazz-066/blatta-stream/"}
+blatta_stream = {path = "../blatta-stream/"}
