@@ -1,3 +1,5 @@
+mod main
+
 use blatta_stream::stream;
 use smoltcp::phy::wait as phy_wait;
 use smoltcp::phy::{Device, RawSocket, RxToken};
@@ -27,7 +29,7 @@ fn main() {
     //let mut socket = RawSocket::new(ifname.as_ref()).unwrap();
     let port_filter = Vec::from([80u16]);
     let mut srt_controller = stream::StreamReaderController::new(port_filter, false, ifname);
-    
+
     let (packets_sender, packets_receiver): (mpsc::Sender<stream::ReconstructedPackets>, mpsc::Receiver<stream::ReconstructedPackets>) = mpsc::channel();
 
     let handle = thread::spawn(move || {
@@ -70,7 +72,7 @@ fn main() {
     });
 
     handle.join();
-    
+
 
     //let config = rnn::NetworkConfig::new(5, 64, 32, 0.2, rnn::RecurrentLayer::Lstm);
     //let rnn_config: RNNConfig = Default::default();
@@ -95,7 +97,7 @@ fn main() {
     let mut src = &pcap[..];
     let (rem, pcap_parser) = PcapParser::new(&pcap[..]).unwrap();
     src = rem;
-    
+
     loop {
         match pcap_parser.next_packet(src) {
             Ok((rem, packet)) => {

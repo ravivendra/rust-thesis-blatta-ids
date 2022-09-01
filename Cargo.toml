@@ -12,5 +12,5 @@ tch = "0.8.0"
 ndarray = {version="0.15", default-features = true}
 anyhow = "1.0.44"
 
-# blatta_stream = {git = "https://github.com/bazz-066/blatta-stream/"}
-blatta_stream = {path = "../blatta-stream/"}
+# Blatta TCP Stream re-assembly library (using forked repository)
+blatta_stream = {git = "https://github.com/ravivendra/rust-thesis-blatta-ids/"} # Original repository : https://github.com/bazz-066/blatta-stream/

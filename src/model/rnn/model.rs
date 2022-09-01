@@ -1,3 +1,5 @@
+mod rnn
+
 use anyhow::{anyhow, Result};
 use ndarray::prelude::*;
 use ndarray::{Axis, concatenate, stack, Array2};
@@ -6,7 +8,6 @@ use std::convert::{TryFrom, TryInto};
 use std::fs;
 use std::io::Read;
 use tch::{nn, nn::Module, nn::OptimizerConfig, Device, nn::RNNConfig, Tensor, nn::RNN, kind::Kind, nn::VarStore};
-
 
 use super::stream;
 
@@ -30,7 +31,7 @@ pub struct NetworkConfig {
 }
 
 impl NetworkConfig {
-    pub fn new(seq_len: usize, 
+    pub fn new(seq_len: usize,
                stride: usize,
                embedding_dim: i64,
                hidden_dim: i64,
@@ -66,7 +67,7 @@ pub fn load_file(init_filename: String, resp_filename: String) -> std::io::Resul
 
 pub fn preprocessing(message: Vec<u8>, seq_len: usize, stride: usize) -> Array2<i64> {
     let nrows = message.len() - stride * seq_len;
-    let mut byte_sequences = Array2::<i64>::default((nrows, seq_len+1)); 
+    let mut byte_sequences = Array2::<i64>::default((nrows, seq_len+1));
     let mut i = 0;
     while i < (message.len() - seq_len) {
         let j = i + seq_len + 1;
@@ -97,7 +98,7 @@ pub fn preprocessing(message: Vec<u8>, seq_len: usize, stride: usize) -> Array2<
 //             rnn_config
 //         )
 //     }
-// 
+//
 pub trait RecurrentModel {
     fn train_model_with_packet(&self, reconstructed_packets: &stream::ReconstructedPackets, direction: stream::PacketDirection) -> Result<()>;
     fn detect_conn(&self, reconstructed_packets: &stream::ReconstructedPackets, direction: stream::PacketDirection, threshold: f64) -> Result<bool>;
@@ -111,7 +112,6 @@ pub struct LSTMModel {
     recurrent_layers: nn::LSTM,
     dense_layer: nn::Linear
 }
-
 
 impl RecurrentModel for LSTMModel{
     fn train_model_with_packet(&self, reconstructed_packets: &stream::ReconstructedPackets, direction: stream::PacketDirection) -> Result<()>{
@@ -240,14 +240,14 @@ impl LSTMModel {
             Default::default(),
         );
         let dense_layer = nn::linear(&vs.root(), network_config.hidden_dim, 256, Default::default());
-        
+
         let recurrent_layers = nn::lstm(
             &vs.root(),
             network_config.embedding_dim,
             network_config.hidden_dim,
             rnn_config
         );
-        
+
         LSTMModel {
             network_config,
             rnn_config,
@@ -255,9 +255,9 @@ impl LSTMModel {
             embedding_layer,
             recurrent_layers,
             dense_layer
-        }       
+        }
     }
-    
+
 
 }
 //pub fn training() -> model/none {
